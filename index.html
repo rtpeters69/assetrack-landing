@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+
+  <title>assetRACK — Track assets. Know where everything lives.</title>
+  <meta name="description" content="assetRACK helps contractors track tools, materials, and supplies across vans, jobs, and storage—without relying on memory, lists, or guesswork." />
+  <meta name="robots" content="index, follow" />
+
+  <style>
+    /* =========================================================
+       assetRACK LANDING (STANDALONE HTML)
+       - Clean theme system (body[data-theme])
+       - One brand variable filled by script
+       ========================================================= */
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      line-height:1.55;
+      font-size:16px;
+      background: var(--bg);
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:1120px; margin:0 auto; padding:0 20px}
+
+    /* =========================
+       THEME TOKENS
+       ========================= */
+
+    body[data-theme="dark"]{
+      --bg:#12151c;
+      --bg2: rgba(255,255,255,.05);
+      --text:#e8ecf6;
+      --muted: rgba(232,236,246,.78);
+      --muted2: rgba(232,236,246,.62);
+      --line: rgba(255,255,255,.14);
+
+      --btn: rgba(255,255,255,.08);
+      --btnText: rgba(255,255,255,.92);
+      --btnLine: rgba(255,255,255,.18);
+      --btnHover: rgba(255,255,255,.12);
+
+      --primary: rgba(90,160,255,.95);
+      --primaryHover: rgba(90,160,255,1);
+      --primaryText:#ffffff;
+
+      --headerBg: rgba(7,9,12,.94); /* less transparent */
+
+      --shadow: 0 16px 60px rgba(0,0,0,.45);
+
+      --accent: rgba(90,160,255,.65);
+      --accent2: rgba(139,242,179,.45);
+    }
+
+    /* Light mode with character (cool slate/blue-gray), not washed-out */
+    body[data-theme="light"]{
+      --bg: #f2f5fb;
+      --bg2: rgba(255,255,255,.86);
+      --text: #0b1220;
+      --muted: rgba(11,18,32,.74);
+      --muted2: rgba(11,18,32,.58);
+      --line: rgba(11,18,32,.12);
+
+      --btn: rgba(255,255,255,.72);
+      --btnText: rgba(11,18,32,.86);
+      --btnLine: rgba(11,18,32,.18);
+      --btnHover: rgba(255,255,255,.92);
+
+      --primary: #2563eb;
+      --primaryHover:#1d4ed8;
+      --primaryText:#ffffff;
+
+      --headerBg: rgba(255,255,255,.92); /* more solid + cleaner */
+
+      --accent: rgba(37,99,235,.55);
+      --accent2: rgba(34,197,94,.28);
+
+      /* “Hero material” becomes the page material (reused below) */
+      --surfaceGrad: linear-gradient(
+        135deg,
+        rgba(185,195,225,.26) 12%,
+        rgba(222,226,232,.60) 52%,
+        rgba(246,248,252,.56) 100%
+      );
+      --surfaceBloom1: radial-gradient(
+        900px 520px at 12% 8%,
+        rgba(255,255,255,.42) 0%,
+        rgba(255,255,255,.18) 38%,
+        rgba(255,255,255,.06) 62%,
+        transparent 78%
+      );
+      --surfaceBloom2: radial-gradient(
+        900px 700px at 92% 92%,
+        rgba(255,255,255,.12) 0%,
+        transparent 55%
+      );
+    }
+
+    /* =========================
+       PAGE BACKGROUND
+       ========================= */
+    .pageShell{
+      min-height:100vh;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* Light: diagonal gradient + subtle color in corners */
+  body[data-theme="light"] .pageShell{
+  background:
+    /* main diagonal wash */
+    linear-gradient(135deg,
+      rgba(120,165,255,.22) 0%,      /* blue/silver upper-left */
+      rgba(255,255,255,.56) 38%,    /* clean neutral mid */
+      rgba(245,246,248,.72) 70%,    /* warm light gray */
+      rgba(250,250,251,.92) 100%    /* warm white bottom-right */
+    ),
+
+    /* upper-left bloom (keep) */
+    radial-gradient(1000px 760px at 14% 10%,
+      rgba(120,165,255,.18),
+      transparent 62%
+    ),
+
+    /* upper-right bloom (this is the one you like) */
+    radial-gradient(900px 700px at 86% 16%,
+      rgba(160,130,255,.12),
+      transparent 66%
+    ),
+
+    /* bottom-right: warm neutral, NOT green */
+    radial-gradient(1100px 900px at 92% 92%,
+      rgba(245,246,248,.85),
+      transparent 60%
+    ),
+
+    var(--bg);
+}
+    /* Dark flourish */
+    body[data-theme="dark"] .pageShell{
+      background:
+        radial-gradient(1200px 800px at 20% 10%, rgba(90,160,255,.20), transparent 55%),
+        radial-gradient(900px 700px at 85% 20%, rgba(139,242,179,.12), transparent 55%),
+        radial-gradient(900px 900px at 40% 95%, rgba(90,160,255,.10), transparent 55%),
+        var(--bg);
+    }
+
+    /* =========================
+       HEADER
+       ========================= */
+    header{
+  position: sticky;
+  top: 0;
+  z-index: 30;
+
+  /* solid — no transparency */
+  background: #ffffff;
+  border-bottom: 1px solid rgba(11,18,32,.14);
+
+  /* kill the “glass” effect */
+  backdrop-filter: none;
+}
+body[data-theme="dark"] header{
+  background: rgba(7,9,12,.96);
+  border-bottom: 1px solid rgba(255,255,255,.14);
+  backdrop-filter: none;
+}
+    body[data-theme="dark"] header{
+      backdrop-filter: blur(18px); /* keep a little glass only in dark */
+    }
+
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0; gap:14px;
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:12px;
+      font-weight:900; letter-spacing:.2px;
+      min-width: 0;
+    }
+    .mark{
+      width:34px; height:34px; border-radius:10px;
+      background: linear-gradient(135deg, rgba(37,99,235,1), rgba(34,197,94,1));
+      box-shadow: 0 10px 30px rgba(37,99,235,.18);
+      position:relative;
+      clip-path: polygon(0 0, 85% 0, 100% 35%, 100% 100%, 15% 100%, 0 65%);
+      flex: 0 0 auto;
+    }
+    .mark:before{content:""; position:absolute; inset:8px; border-radius:8px; background:rgba(255,255,255,.35)}
+    body[data-theme="dark"] .mark:before{background:rgba(11,13,18,.55)}
+
+    .brandGif{
+      height:50px;
+      width:auto;
+      display:block;
+      transform: translateY(-4px);
+      max-width: 280px;
+    }
+
+    nav{display:flex; align-items:center; gap:18px}
+    nav a{font-size:14px; font-weight:800; color: var(--btnText)}
+    nav a:hover{color: var(--text)}
+
+    .actions{display:flex; gap:10px; align-items:center; flex: 0 0 auto}
+
+    /* =========================
+       BUTTONS
+       ========================= */
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      border:1px solid var(--btnLine);
+      background: var(--btn);
+      color: var(--btnText);
+      padding:10px 14px;
+      border-radius:14px;
+      font-weight:900;
+      font-size:14px;
+      gap:10px;
+      cursor:pointer;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+      white-space:nowrap;
+      user-select:none;
+    }
+    .btn:hover{background: var(--btnHover)}
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--primaryText);
+      box-shadow: 0 14px 30px rgba(37,99,235,.18);
+    }
+    .btn.primary:hover{background: var(--primaryHover); border-color: var(--primaryHover)}
+    .btn.toggle{padding:10px 12px; gap:8px}
+    .toggleDot{
+      width:10px; height:10px; border-radius:999px;
+      background: rgba(100,116,139,.65);
+      border:1px solid var(--btnLine);
+    }
+    body[data-theme="dark"] .toggleDot{
+      background: rgba(232,236,246,.45);
+      border-color: rgba(255,255,255,.18);
+    }
+
+    /* =========================
+       HERO + CARDS
+       ========================= */
+    .hero{padding:54px 0 10px}
+    .heroGrid{display:grid; grid-template-columns: 1.15fr .85fr; gap:22px; align-items:stretch}
+
+    .card{
+      background: var(--bg2);
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    /* Light: APPLY HERO MATERIAL ACROSS PAGE SURFACES */
+    body[data-theme="light"] .card,
+    body[data-theme="light"] .panel,
+    body[data-theme="light"] details{
+      background:
+        var(--surfaceBloom1),
+        var(--surfaceBloom2),
+        var(--surfaceGrad);
+      border-color: rgba(11,18,32,.16); /* darker edge */
+      box-shadow:
+        -18px -14px 50px rgba(15,23,42,.14),
+         18px 22px 60px rgba(15,23,42,.24);
+    }
+
+    /* Optional hover: keep same (no “jump”) */
+    body[data-theme="light"] .card:hover,
+    body[data-theme="light"] .panel:hover{
+      box-shadow:
+        -18px -14px 50px rgba(15,23,42,.14),
+         18px 22px 60px rgba(15,23,42,.24);
+    }
+
+    .heroCard{padding:34px 34px 30px; position:relative}
+    .kicker{color:var(--muted2); font-weight:900; font-size:13px; letter-spacing:.2px}
+    /* Light mode: make the kicker almost-black */
+body[data-theme="light"] .kicker{
+  color: rgba(11,18,32,.92);
+}
+    h1{margin:10px 0 12px; font-size:44px; line-height:1.05; letter-spacing:-.8px; color: var(--text)}
+    .sub{color:var(--muted); font-size:18px; max-width:62ch}
+    .ctaRow{display:flex; align-items:center; gap:12px; margin-top:22px; flex-wrap:wrap}
+    .mini{color:var(--muted2); font-size:14px}
+
+    /* Sharper body copy in LIGHT mode (toward black) */
+    body[data-theme="light"] .sectionSub,
+    body[data-theme="light"] .panel p,
+    body[data-theme="light"] details p,
+    body[data-theme="light"] .visualSub,
+    body[data-theme="light"] .mini,
+    body[data-theme="light"] .bullets,
+    body[data-theme="light"] .bullets li{
+      color: rgba(11,18,32,.82);
+    }
+
+    .pillRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
+    .pill{
+      font-size:13px; color:var(--muted);
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.45);
+      padding:8px 10px; border-radius:999px;
+    }
+    body[data-theme="dark"] .pill{background: rgba(255,255,255,.04);}
+
+    .visualCard{position:relative; padding:22px}
+    .visualTitle{font-weight:900; margin:2px 0 8px; color: var(--text)}
+    .visualSub{color:var(--muted); font-size:14px; margin:0 0 12px}
+
+    /* Hero buttons: sharper edge + slightly heavier */
+    body[data-theme="light"] .heroCard .btn{
+      border-radius:12px;
+      font-weight:950;
+      letter-spacing:.1px;
+    }
+
+    /* =========================
+       DIAGRAM
+       ========================= */
+    .diagram{
+      height:300px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.55);
+      position:relative;
+      overflow:hidden;
+    }
+
+  body[data-theme="light"] .diagram{
+  background: rgba(185,190,200,.62); /* darker neutral gray */
+  border-color: rgba(11,18,32,.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.40),
+    0 12px 30px rgba(15,23,42,.12);
+}
+
+    body[data-theme="light"] .diagram .asset{
+      background: linear-gradient(135deg, rgba(255,255,255,.62), rgba(255,255,255,.34));
+      box-shadow:
+        0 10px 26px rgba(15,23,42,.12),
+        inset 0 1px 0 rgba(255,255,255,.60);
+      border-color: rgba(11,18,32,.16);
+    }
+
+    body[data-theme="light"] .diagram .rack{
+      background: linear-gradient(135deg, rgba(255,255,255,.50), rgba(255,255,255,.24));
+      box-shadow:
+        0 10px 26px rgba(15,23,42,.10),
+        inset 0 1px 0 rgba(255,255,255,.55);
+      border-color: rgba(11,18,32,.14);
+    }
+
+    body[data-theme="light"] .slot{
+      background: rgba(255,255,255,.38);
+      border-color: rgba(11,18,32,.12);
+    }
+
+    body[data-theme="dark"] .diagram{
+      background:
+        radial-gradient(650px 300px at 30% 20%, rgba(90,160,255,.18), transparent 55%),
+        radial-gradient(520px 320px at 80% 50%, rgba(139,242,179,.10), transparent 55%),
+        rgba(11,13,18,.35);
+    }
+
+    .diagram .label{
+      position:absolute; font-size:12px; color:var(--muted);
+      padding:6px 8px; border:1px solid var(--line);
+      border-radius:999px; background: rgba(255,255,255,.55)
+    }
+    /* Diagram-only text darker in light mode */
+body[data-theme="light"] .diagram .label{
+  color: rgba(11,18,32,.86);
+  background: rgba(255,255,255,.72);
+}
+body[data-theme="light"] .diagram .rackTag,
+body[data-theme="light"] .diagram .centerText .hint{
+  color: rgba(11,18,32,.74);
+}
+    body[data-theme="dark"] .diagram .label{background: rgba(255,255,255,.04)}
+
+    .diagram .asset{
+      position:absolute; left:18px; top:92px; width:120px; height:90px;
+      border-radius:16px; border:1px solid rgba(15,23,42,.18);
+      background: rgba(255,255,255,.60);
+    }
+    body[data-theme="dark"] .diagram .asset{
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.05);
+    }
+    .diagram .asset:before{
+      content:""; position:absolute; inset:12px; border-radius:12px;
+      border:1px dashed rgba(15,23,42,.20);
+    }
+    body[data-theme="dark"] .diagram .asset:before{border:1px dashed rgba(255,255,255,.18)}
+    .diagram .asset:after{
+      content:"TOOLBOX"; position:absolute; left:16px; bottom:12px;
+      font-size:11px; color: rgba(15,23,42,.70); letter-spacing:.2px
+    }
+    body[data-theme="dark"] .diagram .asset:after{color: rgba(232,236,246,.75)}
+
+    .diagram svg{position:absolute; inset:0}
+
+    .diagram .rack{
+      position:absolute; right:16px; top:38px; width:160px; height:220px;
+      border-radius:16px;
+      border:1px solid rgba(15,23,42,.18);
+      background: rgba(255,255,255,.45);
+      padding:12px;
+    }
+    body[data-theme="dark"] .diagram .rack{
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.04);
+    }
+    .slot{
+      height:20px; border-radius:10px;
+      border:1px solid rgba(15,23,42,.14);
+      background: rgba(255,255,255,.55);
+      margin-bottom:10px
+    }
+    body[data-theme="dark"] .slot{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+    }
+    .slot.hot{
+      border-color: rgba(37,99,235,.55);
+      background: rgba(37,99,235,.12);
+    }
+    body[data-theme="dark"] .slot.hot{
+      border-color: rgba(90,160,255,.55);
+      background: rgba(90,160,255,.12);
+    }
+    .diagram .rackTag{
+      position:absolute; right:22px; top:14px;
+      font-size:12px; color: var(--muted2);
+    }
+
+    .diagram .centerText{
+      position:absolute; left:50%; top:50%;
+      transform:translate(-50%,-50%); text-align:center
+    }
+    .centerText .name{
+      font-weight:900; letter-spacing:.3px; font-size:16px; color: var(--text)
+    }
+    .centerText .hint{color:var(--muted2); font-size:12px; margin-top:4px}
+
+    /* =========================
+       SECTIONS
+       ========================= */
+    section{padding:44px 0}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+    .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+    .sectionTitle{font-size:28px; margin:0 0 10px; letter-spacing:-.3px; color: var(--text)}
+    .sectionSub{color:var(--muted); margin:0 0 18px; max-width:80ch; font-size:16px}
+
+    .panel{
+      background: var(--bg2);
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:20px;
+      box-shadow: var(--shadow);
+    }
+    .panel h3{margin:0 0 8px; font-size:16px; font-weight:900; color: var(--text)}
+    .panel p{margin:0; color:var(--muted); font-size:15px}
+    .bullets{margin:10px 0 0; padding-left:18px; color:var(--muted); font-size:15px}
+    .bullets li{margin:8px 0}
+
+    /* FAQ */
+    details{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px 14px;
+      background: var(--bg2);
+      box-shadow: var(--shadow);
+    }
+    details summary{
+      cursor: pointer;
+      list-style: none;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: -0.1px;
+    }
+    details summary::-webkit-details-marker{display:none}
+    details p{color:var(--muted); margin:10px 0 0; font-size:15px}
+    .faqGrid{display:grid; grid-template-columns:1fr; gap:12px}
+
+    /* CTA + footer */
+.ctaBand{
+  padding:28px;
+  border-radius:28px;
+  border:1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+body[data-theme="light"] .ctaBand{
+  background:
+    /* extended hero-family bloom from the left */
+    radial-gradient(
+      900px 620px at 12% 32%,
+      rgba(140,165,255,.30) 0%,
+      rgba(140,165,255,.18) 45%,
+      rgba(140,165,255,.08) 62%,
+      transparent 78%
+    ),
+
+    /* longer carry of left tone, subtle turquoise finish */
+    linear-gradient(
+      90deg,
+      rgba(235,238,244,.82) 0%,
+      rgba(228,232,240,.86) 45%,
+      rgba(215,228,230,.55) 72%,
+      rgba(175,215,210,.32) 100%
+    );
+}
+
+    .ctaBand h2{margin:0 0 8px; font-size:28px; letter-spacing:-.3px; color: var(--text)}
+    .ctaBand p{margin:0; color:var(--muted)}
+    .ctaBand .ctaRow{margin-top:14px}
+
+    footer{padding:18px 0 40px; color:var(--muted2); font-size:13px}
+    .foot{
+      display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
+      border-top:1px solid var(--line); padding-top:18px
+    }
+    .legal{display:flex; gap:14px; flex-wrap:wrap}
+    .legal a{color:var(--muted2)}
+    .legal a:hover{color:var(--text)}
+
+    .disclaimer{
+      margin-top:14px;
+      padding:12px 14px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background: rgba(255,255,255,.45);
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+    }
+    body[data-theme="dark"] .disclaimer{
+      background: rgba(255,255,255,.03);
+      color: var(--muted2);
+    }
+
+    /* =========================
+       RESPONSIVE (fixes mobile header overflow)
+       ========================= */
+    @media (max-width: 940px){
+      .heroGrid{grid-template-columns:1fr;}
+      h1{font-size:40px}
+      .diagram{height:280px}
+    }
+    @media (max-width: 820px){
+      .topbar{flex-wrap:wrap}
+      nav{
+        width:100%;
+        order: 99;
+        overflow-x:auto;
+        -webkit-overflow-scrolling: touch;
+        white-space:nowrap;
+        padding-bottom:8px;
+      }
+      .actions{margin-left:auto}
+      nav a{padding:6px 8px; display:inline-block}
+    }
+    @media (max-width: 740px){
+      .grid3{grid-template-columns:1fr}
+      .grid2{grid-template-columns:1fr}
+      h1{font-size:36px}
+      .heroCard{padding:28px}
+    }
+    
+    /* =========================================================
+   DIAGRAM CARD — FORCE MATCH OTHER CARDS
+   (no gradients, same material + shadow)
+   ========================================================= */
+.diagram{
+  background: rgba(255,255,255,.58);
+  border: 1px solid rgba(11,18,32,.10);
+  box-shadow: var(--shadow);
+}
+  
+body[data-theme="light"] .card.visualCard{
+  background: rgba(255,255,255,.58) !important;
+  border-color: rgba(11,18,32,.10) !important;
+  box-shadow: -18px -14px 50px rgba(15,23,42,.14),
+              18px 22px 60px rgba(15,23,42,.24) !important;
+}
+</style>
+</head>
+
+<body data-theme="dark">
+  <div class="pageShell">
+    <header>
+      <div class="wrap topbar">
+
+        <div class="brand" aria-label="Brand">
+          <div class="mark" aria-hidden="true"></div>
+          <img class="brandGif"
+               src="https://irp.cdn-website.com/01ed5e28/dms3rep/multi/trans_assetrack.gif"
+               alt=""
+               data-at-alt />
+        </div>
+
+        <nav aria-label="Primary">
+          <a href="#how">How it works</a>
+          <a href="#features">For crews</a>
+          <a href="#faq">FAQ</a>
+          <a href="#cta">Get started</a>
+        </nav>
+
+        <div class="actions">
+          <button class="btn toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+            <span class="toggleDot" aria-hidden="true"></span>
+            <span id="themeLabel">Light</span>
+          </button>
+          <a class="btn" href="#faq">Questions</a>
+          <a class="btn primary" href="#cta">Get Started</a>
+        </div>
+
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap hero">
+        <div class="heroGrid">
+          <div class="card heroCard">
+            <div class="kicker">Contractor-ready asset clarity</div>
+            <h1>Track assets. Know where everything lives.</h1>
+            <p class="sub">
+              Tools, materials, and supplies across vans, job sites, and storage — without relying on memory, lists, or guesswork.
+            </p>
+
+            <div class="ctaRow">
+              <a class="btn primary" href="#cta">Get Started</a>
+              <a class="btn" href="#how">See how it works</a>
+              <span class="mini">Fast to check. Easy to trust.</span>
+            </div>
+
+            <div class="pillRow" aria-label="Key concepts">
+              <span class="pill">Search first</span>
+              <span class="pill">Current + Home location</span>
+              <span class="pill">Job sites are first-class</span>
+              <span class="pill">Missing is a real status</span>
+            </div>
+          </div>
+
+          <div class="card visualCard" aria-label="Rack/Track explainer">
+            <div class="visualTitle">Track ↔ Rack</div>
+            <p class="visualSub">Assets move — but they always have a home. <span data-at-name></span> shows both.</p>
+
+            <div class="diagram" role="img" aria-label="Diagram: asset moves to a rack location">
+              <div class="label" style="left:16px; top:16px">In use</div>
+              <div class="label" style="left:16px; bottom:16px">Current: Job — Lee Kitchen</div>
+
+              <div class="asset"></div>
+
+              <div class="centerText">
+                <div class="name" data-at-name></div>
+                <div class="hint">certainty, not guesswork</div>
+              </div>
+
+              <div class="rackTag">Home: Van 1 • LSB3R2</div>
+              <div class="rack">
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot hot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+              </div>
+
+              <svg viewBox="0 0 600 320" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M140,140 C250,75 320,75 410,120" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" />
+                <path d="M155,228 C255,290 340,292 435,242" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="6 8" />
+                <circle cx="410" cy="120" r="5" fill="var(--accent)" />
+              </svg>
+            </div>
+
+            <div style="margin-top:14px; color:var(--muted2); font-size:13px">
+              Tip: Start with 5–10 zones per location. Add detail only where it helps.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section id="how">
+        <div class="wrap">
+          <h2 class="sectionTitle">Keeping track of physical stuff is a mental burden.</h2>
+          <p class="sectionSub">
+            Where is it? Who has it? Is it still at the last job? Most crews don’t lose tools because they’re careless — they lose clarity because work moves.
+          </p>
+
+          <div class="grid3">
+            <div class="panel">
+              <h3>Search first</h3>
+              <p>Type what you need. Get an answer you can trust — fast.</p>
+            </div>
+            <div class="panel">
+              <h3>Current + Home</h3>
+              <p>See where it is now and where it belongs. No guilt, no guessing.</p>
+            </div>
+            <div class="panel">
+              <h3>Built for real movement</h3>
+              <p>Vans, job sites, storage, and shared tools — modeled the way you actually work.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features">
+        <div class="wrap">
+          <h2 class="sectionTitle">What <span data-at-name></span> does (and doesn’t try to be)</h2>
+          <p class="sectionSub">It’s not a warehouse system. It’s a trusted reference for where things are — and where they belong.</p>
+
+          <div class="grid2">
+            <div class="panel">
+              <h3>Do</h3>
+              <ul class="bullets">
+                <li>Find tools, materials, and supplies by search</li>
+                <li>Organize by Location → Zone → Slot code (optional)</li>
+                <li>Share visibility across your crew</li>
+                <li>Track consumables with simple quantity adjustments</li>
+                <li>Mark items Missing when reality is unknown</li>
+              </ul>
+            </div>
+
+            <div class="panel">
+              <h3>Don’t</h3>
+              <ul class="bullets">
+                <li>Force perfect counts or audits</li>
+                <li>Nag you all day</li>
+                <li>Turn your van into a spreadsheet</li>
+                <li>Punish you for imperfect updates</li>
+                <li>Assume job sites are temporary exceptions</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq">
+        <div class="wrap">
+          <h2 class="sectionTitle">FAQ</h2>
+          <p class="sectionSub">Short answers. No fluff.</p>
+
+          <div class="faqGrid">
+            <details>
+              <summary>What is <span data-at-name></span>?</summary>
+              <p><span data-at-name></span> helps you keep track of where tools, materials, and supplies are—and where they belong—without relying on memory or lists.</p>
+            </details>
+            <details>
+              <summary>Is this inventory software?</summary>
+              <p>Not in the traditional sense. It isn’t about audits or perfect counts. It’s about clarity—knowing where things are right now and where they should go back to.</p>
+            </details>
+            <details>
+              <summary>What problem does it solve?</summary>
+              <p>It removes the mental burden of keeping track of physical stuff. You don’t have to remember where something is, guess who has it, or keep wondering.</p>
+            </details>
+            <details>
+              <summary>How is this different from a spreadsheet?</summary>
+              <p>Lists capture intent. <span data-at-name></span> captures state. Instead of “I think it’s in Van 2,” you can search and know—without maintaining another list.</p>
+            </details>
+            <details>
+              <summary>What does “everything has a home” mean?</summary>
+              <p>Every item has a reference location—where it belongs when it’s not intentionally elsewhere. That doesn’t mean it’s wrong to be at a job or another van.</p>
+            </details>
+            <details>
+              <summary>What if something is missing?</summary>
+              <p>You can mark an item as Missing when its current location is unknown. This simply acknowledges reality so you don’t keep carrying the question.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section id="cta">
+        <div class="wrap">
+          <div class="ctaBand">
+            <h2>Stop relying on memory.</h2>
+            <p>Start with one van and one job site. Add detail only where it helps.</p>
+
+            <div class="ctaRow">
+              <a class="btn primary" href="#" onclick="alert('Hook this button to your email capture or app download.'); return false;">Get Started</a>
+              <a class="btn" href="#faq">Read the FAQ</a>
+            </div>
+
+            <div class="disclaimer">
+              <strong>Preview notice:</strong> <span data-at-name></span> is an independent product currently in development and being shared for preview/testing.
+              Information shown may be incomplete or inaccurate. Do not rely on <span data-at-name></span> for safety-critical decisions.
+            </div>
+          </div>
+
+          <footer>
+            <div class="foot">
+              <div>© <span id="y"></span> <span data-at-name></span></div>
+              <div class="legal">
+                <a href="#how">How it works</a>
+                <a href="#features">For crews</a>
+                <a href="#faq">FAQ</a>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      // ===== Change the brand ONE place here =====
+      const BRAND_NAME = "assetRACK";
+      const STORAGE_KEY = "assetrack_theme";
+
+      // Prevent "reload jumps to bottom" if a #hash is present
+     // If a #hash is present, wait until the page is ready, then scroll smoothly to it
+const hash = window.location.hash;
+if (hash) {
+  window.addEventListener("load", () => {
+    const target = document.querySelector(hash);
+    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+}
+
+      // Fill brand name everywhere we placed placeholders
+      document.querySelectorAll("[data-at-name]").forEach(el => { el.textContent = BRAND_NAME; });
+      document.querySelectorAll("[data-at-alt]").forEach(el => { el.setAttribute("alt", BRAND_NAME); });
+
+      // Theme
+      const body = document.body;
+      const label = document.getElementById("themeLabel");
+      const toggleBtn = document.getElementById("themeToggle");
+
+      function applyTheme(theme) {
+        body.setAttribute("data-theme", theme);
+        // Button text shows what you will switch TO
+        if (label) label.textContent = (theme === "dark") ? "Light" : "Dark";
+      }
+
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const systemPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const initialTheme = saved ? saved : (systemPrefersDark ? "dark" : "light");
+      applyTheme(initialTheme);
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener("click", function () {
+          const current = body.getAttribute("data-theme") || "light";
+          const next = (current === "dark") ? "light" : "dark";
+          applyTheme(next);
+          localStorage.setItem(STORAGE_KEY, next);
+        });
+      }
+
+      // Year
+      const y = document.getElementById("y");
+      if (y) y.textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
