@@ -9,6 +9,8 @@
   <meta name="robots" content="index, follow" />
 
   <style>
+
+    
     /* =========================================================
        assetRACK LANDING (STANDALONE HTML)
        - Clean theme system (body[data-theme])
@@ -198,6 +200,14 @@ nav{
       font-weight:900; letter-spacing:.2px;
       min-width: 0;
     }
+.brandMark{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  display:block;
+  flex:0 0 auto;
+}
+    
     .mark{
       width:34px; height:34px; border-radius:10px;
       background: linear-gradient(135deg, rgba(37,99,235,1), rgba(34,197,94,1));
@@ -209,13 +219,13 @@ nav{
     .mark:before{content:""; position:absolute; inset:8px; border-radius:8px; background:rgba(255,255,255,.35)}
     body[data-theme="dark"] .mark:before{background:rgba(11,13,18,.55)}
 
-    .brandGif{
-      height:50px;
-      width:auto;
-      display:block;
-      transform: translateY(-4px);
-      max-width: 280px;
-    }
+   .brandGif{
+  height:34px;
+  width:auto;
+  display:block;
+  transform:none;
+  max-width: 280px;
+}
 
     nav{display:flex; align-items:center; gap:18px}
     nav a{font-size:14px; font-weight:800; color: var(--btnText)}
@@ -624,10 +634,10 @@ body[data-theme="light"] .card.visualCard{
       <div class="wrap topbar">
 
         <div class="brand" aria-label="Brand">
-          <div class="mark" aria-hidden="true"></div>
+          <img class="brandMark" src="/assets/app-icon128.png" alt="assetRACK icon">
           <img class="brandGif"
                src="https://irp.cdn-website.com/01ed5e28/dms3rep/multi/trans_assetrack.gif"
-               alt=""
+               alt="assetRack"
                data-at-alt />
         </div>
 
