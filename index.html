@@ -580,17 +580,12 @@ body[data-theme="light"] .ctaBand{
       }
     }
 
-    /* =========================================================
+/* =========================================================
    iOS HEADER FIX (<=520px)
    - Brand centered under notch
    - Actions move to their own row (no overlap)
    ========================================================= */
 @media (max-width: 520px){
-  /* Make header 2 rows:
-     Row 1: centered brand
-     Row 2: actions (buttons)
-     Row 3: nav (links)
-  */
   .topbar{
     display:grid !important;
     grid-template-columns: 1fr auto 1fr !important;
@@ -600,7 +595,6 @@ body[data-theme="light"] .ctaBand{
     padding: calc(10px + env(safe-area-inset-top)) 14px 10px 14px !important;
   }
 
-  /* BRAND centered (never off-screen) */
   .brand{
     grid-column: 2 / 3 !important;
     grid-row: 1 / 2 !important;
@@ -616,13 +610,12 @@ body[data-theme="light"] .ctaBand{
   }
   .brandGif{
     height:38px !important;
-    max-width: calc(78vw - 54px) !important; /* prevents crowding icon */
+    max-width: calc(78vw - 54px) !important;
     width:auto !important;
     transform:none !important;
     display:block !important;
   }
 
-  /* ACTIONS go on their own row so they can't layer over the brand */
   .actions{
     grid-column: 1 / 4 !important;
     grid-row: 2 / 3 !important;
@@ -631,7 +624,6 @@ body[data-theme="light"] .ctaBand{
     gap:10px !important;
   }
 
-  /* NAV stays below actions */
   nav{
     grid-column: 1 / 4 !important;
     grid-row: 3 / 4 !important;
