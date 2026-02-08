@@ -579,6 +579,71 @@ body[data-theme="light"] .ctaBand{
         padding-bottom:6px;
       }
     }
+
+    /* =========================================================
+   iOS HEADER FIX (<=520px)
+   - Brand centered under notch
+   - Actions move to their own row (no overlap)
+   ========================================================= */
+@media (max-width: 520px){
+  /* Make header 2 rows:
+     Row 1: centered brand
+     Row 2: actions (buttons)
+     Row 3: nav (links)
+  */
+  .topbar{
+    display:grid !important;
+    grid-template-columns: 1fr auto 1fr !important;
+    grid-template-rows: auto auto auto !important;
+    align-items:center !important;
+    gap:10px !important;
+    padding: calc(10px + env(safe-area-inset-top)) 14px 10px 14px !important;
+  }
+
+  /* BRAND centered (never off-screen) */
+  .brand{
+    grid-column: 2 / 3 !important;
+    grid-row: 1 / 2 !important;
+    justify-content:center !important;
+    max-width: 78vw !important;
+    overflow:hidden !important;
+  }
+  .brandMark{
+    width:44px !important;
+    height:44px !important;
+    border-radius:14px !important;
+    flex:0 0 44px !important;
+  }
+  .brandGif{
+    height:38px !important;
+    max-width: calc(78vw - 54px) !important; /* prevents crowding icon */
+    width:auto !important;
+    transform:none !important;
+    display:block !important;
+  }
+
+  /* ACTIONS go on their own row so they can't layer over the brand */
+  .actions{
+    grid-column: 1 / 4 !important;
+    grid-row: 2 / 3 !important;
+    justify-content:center !important;
+    flex-wrap:wrap !important;
+    gap:10px !important;
+  }
+
+  /* NAV stays below actions */
+  nav{
+    grid-column: 1 / 4 !important;
+    grid-row: 3 / 4 !important;
+    width:100% !important;
+    overflow-x:auto !important;
+    white-space:nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding-top:6px !important;
+    padding-bottom:6px !important;
+  }
+}
+  
   </style>
 </head>
 
