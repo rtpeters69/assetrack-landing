@@ -325,6 +325,103 @@ body[data-theme="light"] .card.visualCard{
   box-shadow: -18px -14px 50px rgba(15,23,42,.14),
               18px 22px 60px rgba(15,23,42,.24) !important;
 }
+
+    /* ===== PATCH: header + buttons + responsive (paste at end) ===== */
+
+/* buttons/pills should always render as pills */
+.btn{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:1px solid var(--btnLine) !important;
+  background: var(--btn) !important;
+  color: var(--btnText) !important;
+  padding:10px 14px !important;
+  border-radius:14px !important;
+  font-weight:900 !important;
+  font-size:14px !important;
+  gap:10px !important;
+  white-space:nowrap !important;
+}
+.btn.primary{
+  background: var(--primary) !important;
+  border-color: var(--primary) !important;
+  color: var(--primaryText) !important;
+}
+.pill{
+  display:inline-block !important;
+  font-size:13px !important;
+  border:1px solid var(--line) !important;
+  padding:8px 10px !important;
+  border-radius:999px !important;
+}
+
+/* hide default FAQ markers again */
+details summary::-webkit-details-marker{ display:none !important; }
+
+/* force header to behave */
+.topbar{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:12px !important;
+  padding:14px 20px !important;
+}
+.brand{
+  display:flex !important;
+  align-items:center !important;
+  gap:10px !important;
+  min-width:0 !important;
+}
+.brandMark{
+  width:28px !important;
+  height:28px !important;
+  border-radius:8px !important;
+  flex:0 0 28px !important;
+  object-fit:cover !important;
+}
+.brandGif{
+  height:28px !important;
+  width:auto !important;
+  max-width:140px !important;
+  transform:none !important;
+  display:block !important;
+}
+.actions{
+  display:flex !important;
+  gap:10px !important;
+  align-items:center !important;
+  flex:0 0 auto !important;
+}
+nav{
+  display:flex !important;
+  align-items:center !important;
+  gap:18px !important;
+  flex:0 0 auto !important;
+}
+nav a{ font-size:14px !important; font-weight:800 !important; }
+
+/* responsive */
+@media (max-width: 820px){
+  .topbar{ flex-wrap:wrap !important; row-gap:10px !important; }
+  nav{
+    width:100% !important;
+    order:99 !important;
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    white-space:nowrap !important;
+    padding-top:8px !important;
+    padding-bottom:8px !important;
+  }
+  nav a{ padding:6px 8px !important; display:inline-block !important; }
+}
+
+@media (max-width: 520px){
+  .topbar{ padding:10px 14px !important; }
+  .brandGif{ max-width:120px !important; }
+}
+
+    
 </style>
 </head>
 
