@@ -635,7 +635,17 @@ body[data-theme="light"] .ctaBand{
     padding-bottom:6px !important;
   }
 }
-  
+  /* Desktop brand sizing (bigger vs right-side buttons) */
+.brandMark{ width:40px; height:40px; border-radius:12px; flex:0 0 40px; }
+.brandGif{ height:36px; max-width:260px; }
+
+    /* Keep diagram from breaking when cards stack/narrow */
+@media (max-width: 740px){
+  .diagram{ height:260px; }
+  .diagram .asset{ left:12px; width:108px; }
+  .diagram .rack{ right:12px; width:140px; }
+}
+    
   </style>
 </head>
 
