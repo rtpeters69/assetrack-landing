@@ -17,6 +17,34 @@
   display:block;
   flex:0 0 34px;
   object-fit:cover;
+}.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;              /* lets it shrink instead of pushing others */
+  flex:1 1 auto;            /* brand can shrink/grow */
+}
+
+.actions{
+  flex:0 0 auto;
+  margin-left:auto;
+}
+
+/* icon inside brand: first element */
+.brand > *:first-child{
+  width:28px;
+  height:28px;
+  border-radius:8px;
+  flex:0 0 28px;
+}
+
+/* the GIF (or wordmark) should NOT push into the buttons */
+.brandGif{
+  height:28px;
+  width:auto;
+  max-width:120px;          /* key constraint */
+  transform:none !important;/* kill any leftover translateY */
+  display:block;
 }
 
 @media (max-width: 520px){
@@ -599,11 +627,10 @@ body[data-theme="light"] .ctaBand{
       .diagram{height:280px}
     }
    @media (max-width: 820px){
-  .topbar{
-    flex-wrap:wrap;
-    padding:12px 20px;      /* keep side padding */
-    row-gap:10px;           /* vertical space between rows */
-  }
+  .topbar{ flex-wrap:wrap; row-gap:10px; }
+  nav{ width:100%; order:99; padding-top:8px; }
+}
+}
 
   .brand{ order:1; }
 
