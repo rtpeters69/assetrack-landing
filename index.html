@@ -635,7 +635,7 @@
   </style>
 </head>
 
-<body data-theme="dark">
+<body data-theme="light">
   <div class="pageShell">
     <header>
       <div class="wrap topbar">
@@ -855,92 +855,93 @@
     </main>
   </div>
 <script>
-  (function () {
-
+(function () {
   /* =========================================================
-   FIX: Stop “reload jumps” (desktop + iOS)
-   - Works even with iOS back/forward cache (bfcache)
-   ========================================================= */
-if ("scrollRestoration" in history) {
-  history.scrollRestoration = "manual";
-}
+     1) STOP “RELOAD JUMPS” (desktop + iOS)
+     ========================================================= */
+  try {
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  } catch(e){}
 
-function forceTopIfNoHash() {
-  if (window.location.hash) return;
-
-  // Do multiple passes because iOS can re-apply scroll after first paint
-  window.scrollTo(0, 0);
-  requestAnimationFrame(() => window.scrollTo(0, 0));
-  setTimeout(() => window.scrollTo(0, 0), 50);
-  setTimeout(() => window.scrollTo(0, 0), 200);
-}
-
-function scrollToHashIfPresent() {
-  const hash = window.location.hash;
-  if (!hash) return;
-
-  const target = document.querySelector(hash);
-  if (!target) return;
-
-  // No smooth scrolling here (prevents weird offsets)
-  target.scrollIntoView({ behavior: "auto", block: "start" });
-  requestAnimationFrame(() => target.scrollIntoView({ behavior: "auto", block: "start" }));
-}
-
-// Fires on normal loads AND when iOS restores the page from cache
-window.addEventListener("pageshow", (e) => {
-  // If restored from bfcache, iOS LOVES to restore old scroll position
-  if (e.persisted) {
-    if (window.location.hash) scrollToHashIfPresent();
-    else forceTopIfNoHash();
-    return;
+  function scrollToTopHard() {
+    // Multiple passes because iOS can re-apply scroll after first paint
+    window.scrollTo(0, 0);
+    requestAnimationFrame(() => window.scrollTo(0, 0));
+    setTimeout(() => window.scrollTo(0, 0), 50);
+    setTimeout(() => window.scrollTo(0, 0), 200);
   }
 
-  // Normal load path
-  if (window.location.hash) scrollToHashIfPresent();
-  else forceTopIfNoHash();
-});
+  function scrollToHashHard() {
+    const hash = window.location.hash;
+    if (!hash) return;
 
-// Also force top right before leaving if no hash (prevents "reopen mid-page")
-window.addEventListener("beforeunload", () => {
-  if (!window.location.hash) window.scrollTo(0, 0);
-});
-    // ... keep the rest of your script exactly as-is ...
+    const el = document.querySelector(hash);
+    if (!el) return;
 
+    el.scrollIntoView({ behavior: "auto", block: "start" });
+    requestAnimationFrame(() => el.scrollIntoView({ behavior: "auto", block: "start" }));
+  }
 
+  // pageshow catches iOS “bfcache restore” reload weirdness
+  window.addEventListener("pageshow", () => {
+    if (window.location.hash) scrollToHashHard();
+    else scrollToTopHard();
+  });
 
-      // Fill brand name placeholders
-      document.querySelectorAll("[data-at-name]").forEach(el => { el.textContent = BRAND_NAME; });
-      document.querySelectorAll("[data-at-alt]").forEach(el => { el.setAttribute("alt", BRAND_NAME); });
+  // beforeunload helps prevent “reopen mid-page” on some browsers
+  window.addEventListener("beforeunload", () => {
+    if (!window.location.hash) window.scrollTo(0, 0);
+  });
 
-      // Theme toggle
-      const body = document.body;
-      const label = document.getElementById("themeLabel");
-      const toggleBtn = document.getElementById("themeToggle");
+  /* =========================================================
+     2) BRAND + THEME
+     ========================================================= */
+  const BRAND_NAME = "assetRACK";
+  const STORAGE_KEY = "assetrack_theme";
 
-      function applyTheme(theme) {
-        body.setAttribute("data-theme", theme);
-        if (label) label.textContent = (theme === "dark") ? "Light" : "Dark";
-      }
+  // Fill brand name placeholders
+  document.querySelectorAll("[data-at-name]").forEach(el => { el.textContent = BRAND_NAME; });
+  document.querySelectorAll("[data-at-alt]").forEach(el => { el.setAttribute("alt", BRAND_NAME); });
 
-      const saved = localStorage.getItem(STORAGE_KEY);
-      const systemPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const initialTheme = saved ? saved : (systemPrefersDark ? "dark" : "light");
-      applyTheme(initialTheme);
+  const body = document.body;
 
-      if (toggleBtn) {
-        toggleBtn.addEventListener("click", function () {
-          const current = body.getAttribute("data-theme") || "light";
-          const next = (current === "dark") ? "light" : "dark";
-          applyTheme(next);
-          localStorage.setItem(STORAGE_KEY, next);
-        });
-      }
+  // IMPORTANT: avoid duplicate IDs breaking things — use querySelector
+  const toggleBtn = document.querySelector("#themeToggle");
+  const label = document.querySelector("#themeLabel");
 
-      // Year
-      const y = document.getElementById("y");
-      if (y) y.textContent = new Date().getFullYear();
-    })();
-  </script>
+  function applyTheme(theme) {
+    body.setAttribute("data-theme", theme);
+    if (label) label.textContent = (theme === "dark") ? "Light" : "Dark";
+  }
+
+  // If you ever want to reset theme, add ?resetTheme=1 to the URL once
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("resetTheme") === "1") {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+
+  const saved = localStorage.getItem(STORAGE_KEY);
+  const systemPrefersDark =
+    window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+  const initialTheme = saved ? saved : (systemPrefersDark ? "dark" : "light");
+  applyTheme(initialTheme);
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      const current = body.getAttribute("data-theme") || "light";
+      const next = (current === "dark") ? "light" : "dark";
+      applyTheme(next);
+      localStorage.setItem(STORAGE_KEY, next);
+    });
+  }
+
+  /* =========================================================
+     3) YEAR
+     ========================================================= */
+  const y = document.getElementById("y");
+  if (y) y.textContent = new Date().getFullYear();
+})();
+</script>
 </body>
 </html>
