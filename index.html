@@ -578,20 +578,19 @@
 
   /* TRUE center the GIF on the screen (not “center of remaining space”) */
     /* TRUE center the GIF on the screen */
+  @media (max-width: 520px){
   .brandGif{
     position:absolute;
     left:50%;
-    top: calc(10px + env(safe-area-inset-top) + 18px);
-    transform: translateX(-50%) !important;
-
-    height:36px;
+    transform: translateX(-50%);
+    height:44px; /* bigger */
     width:auto;
-    max-width: calc(100vw - 160px);
-
+    max-width: calc(100vw - 150px);
+    top: calc(env(safe-area-inset-top) + 6px); /* smaller number = higher */
     z-index: 2;
     display:block;
   }
-
+}
   /* Actions (toggle) on the right in row 1 */
   .actions{
     grid-column: 3 / 4;
