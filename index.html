@@ -857,33 +857,54 @@
 <script>
   (function () {
 
-    /* =========================================================
-       FIX: Stop “reload jumps to bottom/middle” (desktop + iOS)
-       - If no #hash → start at top
-       - If #hash exists → scroll to that section
-       ========================================================= */
-    if ("scrollRestoration" in history) {
-      history.scrollRestoration = "manual";
-    }
+  /* =========================================================
+   FIX: Stop “reload jumps” (desktop + iOS)
+   - Works even with iOS back/forward cache (bfcache)
+   ========================================================= */
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
 
-    // If there is NO hash (no #faq etc), force top on load
-    if (!window.location.hash) {
-      window.addEventListener("load", () => {
-        window.scrollTo(0, 0);
-      });
-    } else {
-      // If there IS a hash, scroll to it after load (no smooth = no weird offset)
-      window.addEventListener("load", () => {
-        const id = window.location.hash;
-        const target = document.querySelector(id);
-        if (target) target.scrollIntoView({ behavior: "auto", block: "start" });
-      });
-    }
+function forceTopIfNoHash() {
+  if (window.location.hash) return;
 
-    // ===== Change the brand ONE place here =====
-    const BRAND_NAME = "assetRACK";
-    const STORAGE_KEY = "assetrack_theme";
+  // Do multiple passes because iOS can re-apply scroll after first paint
+  window.scrollTo(0, 0);
+  requestAnimationFrame(() => window.scrollTo(0, 0));
+  setTimeout(() => window.scrollTo(0, 0), 50);
+  setTimeout(() => window.scrollTo(0, 0), 200);
+}
 
+function scrollToHashIfPresent() {
+  const hash = window.location.hash;
+  if (!hash) return;
+
+  const target = document.querySelector(hash);
+  if (!target) return;
+
+  // No smooth scrolling here (prevents weird offsets)
+  target.scrollIntoView({ behavior: "auto", block: "start" });
+  requestAnimationFrame(() => target.scrollIntoView({ behavior: "auto", block: "start" }));
+}
+
+// Fires on normal loads AND when iOS restores the page from cache
+window.addEventListener("pageshow", (e) => {
+  // If restored from bfcache, iOS LOVES to restore old scroll position
+  if (e.persisted) {
+    if (window.location.hash) scrollToHashIfPresent();
+    else forceTopIfNoHash();
+    return;
+  }
+
+  // Normal load path
+  if (window.location.hash) scrollToHashIfPresent();
+  else forceTopIfNoHash();
+});
+
+// Also force top right before leaving if no hash (prevents "reopen mid-page")
+window.addEventListener("beforeunload", () => {
+  if (!window.location.hash) window.scrollTo(0, 0);
+});
     // ... keep the rest of your script exactly as-is ...
 
 
