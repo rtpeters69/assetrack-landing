@@ -591,19 +591,18 @@
         z-index: 3;
       }
 
-      /* GIF TRUE CENTER (viewport center) */
-      .brandGif{
-        position:absolute;
-        left:50vw;                 /* TRUE center of the screen */
-        transform: translateX(-50%);
-        top: calc(env(safe-area-inset-top) + 10px);  /* vertical placement */
-        height:44px;
-        width:auto;
-        max-width: calc(100vw - 160px); /* keeps it clear of icon + toggle */
-        z-index: 2;
-        display:block;
-        pointer-events:none;
-      }
+       /* TRUE center the GIF on the SCREEN */
+  .brandGif{
+    position:absolute !important;
+    left:50% !important;
+    transform: translateX(-50%) !important;
+    top: calc(env(safe-area-inset-top) + 10px) !important; /* adjust up/down */
+    height:44px !important;                                /* your size */
+    width:auto !important;
+    max-width: calc(100vw - 170px) !important;             /* avoids icon + toggle */
+    margin:0 !important;
+    right:auto !important;
+  }
 
       /* Row 2: nav links + Get Started together */
       .navRow{
