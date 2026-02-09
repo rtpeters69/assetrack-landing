@@ -579,17 +579,22 @@
   /* TRUE center the GIF on the screen (not “center of remaining space”) */
     /* TRUE center the GIF on the screen */
   @media (max-width: 520px){
-  .brandGif{
-    position:absolute;
-    left:50%;
-    transform: translateX(-50%);
-    height:44px; /* bigger */
-    width:auto;
-    max-width: calc(100vw - 150px);
-    top: calc(env(safe-area-inset-top) + 6px); /* smaller number = higher */
-    z-index: 2;
-    display:block;
-  }
+  ./* iPhone: FORCE the GIF to true screen center */
+.brandGif{
+  position:absolute !important;
+
+  left:50vw !important;                 /* <-- viewport center */
+  transform: translateX(-50%) !important;
+
+  top: calc(env(safe-area-inset-top) + 10px) !important;  /* keep your vertical placement */
+  height:44px;                          /* keep your size */
+  width:auto !important;
+
+  max-width: calc(100vw - 150px) !important; /* keeps it clear of icon + toggle */
+  margin:0 !important;
+  right:auto !important;
+  justify-self:auto !important;         /* kills any grid centering rules */
+}
 }
   /* Actions (toggle) on the right in row 1 */
   .actions{
