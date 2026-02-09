@@ -854,9 +854,40 @@
       </section>
     </main>
   </div>
+<script>
+  (function () {
 
-  <script>
-    (function () {
+    /* =========================================================
+       FIX: Stop “reload jumps to bottom/middle” (desktop + iOS)
+       - If no #hash → start at top
+       - If #hash exists → scroll to that section
+       ========================================================= */
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
+    // If there is NO hash (no #faq etc), force top on load
+    if (!window.location.hash) {
+      window.addEventListener("load", () => {
+        window.scrollTo(0, 0);
+      });
+    } else {
+      // If there IS a hash, scroll to it after load (no smooth = no weird offset)
+      window.addEventListener("load", () => {
+        const id = window.location.hash;
+        const target = document.querySelector(id);
+        if (target) target.scrollIntoView({ behavior: "auto", block: "start" });
+      });
+    }
+
+    // ===== Change the brand ONE place here =====
+    const BRAND_NAME = "assetRACK";
+    const STORAGE_KEY = "assetrack_theme";
+
+    // ... keep the rest of your script exactly as-is ...
+
+
+      
       const BRAND_NAME = "assetRACK";
       const STORAGE_KEY = "assetrack_theme";
 
