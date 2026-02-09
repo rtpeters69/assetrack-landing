@@ -597,7 +597,18 @@
     position: relative;
     z-index: 3;
   }
+/* iPhone: force the wordmark/GIF to true screen-center */
+@media (max-width: 520px){
+  .topbar{ position:relative; }
 
+  /* This is the magic: take the GIF out of the grid math */
+  .brandGif{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%);
+    max-width: calc(100vw - 160px); /* keeps it away from icon + toggle */
+  }
+}
   /* --- ROW 2: nav across full width --- */
   .navRow,
   nav{
