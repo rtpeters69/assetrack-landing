@@ -655,21 +655,22 @@ body[data-theme="light"] .ctaBand{
       <div class="wrap topbar">
 
         <!-- BRAND: icon + GIF -->
-        <div class="brand" aria-label="Brand">
-          <!-- IMPORTANT: no leading slash. On Vercel static, use assets/... -->
-          <img class="brandMark" src="assets/app-icon128.png" alt="assetRACK icon">
-          <img class="brandGif"
-               src="https://irp.cdn-website.com/01ed5e28/dms3rep/multi/trans_assetrack.gif"
-               alt="assetRACK"
-               data-at-alt />
-        </div>
+       <div class="actions">
+  <button class="btn toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+    <span class="toggleDot" aria-hidden="true"></span>
+    <span id="themeLabel">Light</span>
+  </button>
+  <a class="btn primary" href="#cta">Get Started</a>
+</div>
 
         <!-- NAV LINKS -->
-       <nav aria-label="Primary">
-  <a href="#how">How it works</a>
-  <a href="#features">For crews</a>
-  <a href="#faq">FAQ</a>
-</nav>
+     <div class="navRow">
+  <nav aria-label="Primary">
+    <a href="#how">How it works</a>
+    <a href="#features">For crews</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+</div>
         <!-- ACTION BUTTONS -->
         <div class="actions">
   <button class="btn toggle" id="themeToggle" type="button" aria-label="Toggle theme">
