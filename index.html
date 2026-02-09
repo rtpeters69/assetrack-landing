@@ -577,14 +577,17 @@
   }
 
   /* TRUE center the GIF on the screen (not “center of remaining space”) */
+    /* TRUE center the GIF on the screen */
   .brandGif{
     position:absolute;
     left:50%;
-    top: calc(10px + env(safe-area-inset-top) + 19px); /* vertical center of row 1 */
-    transform: translateX(-50%);
+    top: calc(10px + env(safe-area-inset-top) + 18px);
+    transform: translateX(-50%) !important;
+
     height:36px;
     width:auto;
-    max-width: calc(100vw - 140px); /* prevents collision with icon + toggle */
+    max-width: calc(100vw - 160px);
+
     z-index: 2;
     display:block;
   }
@@ -597,18 +600,7 @@
     position: relative;
     z-index: 3;
   }
-/* iPhone: force the wordmark/GIF to true screen-center */
-@media (max-width: 520px){
-  .topbar{ position:relative; }
 
-  /* This is the magic: take the GIF out of the grid math */
-  .brandGif{
-    position:absolute;
-    left:50%;
-    transform:translateX(-50%);
-    max-width: calc(100vw - 160px); /* keeps it away from icon + toggle */
-  }
-}
   /* --- ROW 2: nav across full width --- */
   .navRow,
   nav{
