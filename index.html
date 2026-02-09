@@ -547,405 +547,84 @@
       .diagram .rack{ right:12px; width:140px; }
     }
 
-    /* iPhone header layout EXACTLY as requested:
-       Row 1: icon LEFT, GIF CENTER, Dark RIGHT
-       Row 2: nav links + Get Started button together
-    */
-    @media (max-width: 520px){
+ /* =========================================================
+   iPhone header layout (<=520px)
+   Row 1: icon LEFT, GIF TRUE CENTER, Dark toggle RIGHT
+   Row 2: nav links + Get Started together
+   ========================================================= */
+@media (max-width: 520px){
 
-  /* --- ROW 1: icon left, GIF truly centered, toggle right --- */
+  /* Make the header a 2-row grid */
   .topbar{
-    position: relative; /* needed for absolute centering */
-    display:grid;
-    grid-template-columns: auto 1fr auto; /* icon | (center space) | toggle */
-    grid-template-rows: auto auto;        /* row 1 = header, row 2 = nav */
-    align-items:center;
-    gap:10px;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;   /* left | middle | right */
+    grid-template-rows: auto auto;          /* row1 = header, row2 = navRow */
+    align-items: center;
+    gap: 10px;
     padding: calc(10px + env(safe-area-inset-top)) 14px 10px 14px;
   }
 
-  /* Put the icon on the left in row 1 */
+  /* IMPORTANT: let the icon + GIF participate in .topbar grid directly */
+  .brand{
+    display: contents;
+  }
+
+  /* ICON: force to far left (row 1) */
   .brandMark{
     grid-column: 1 / 2;
     grid-row: 1 / 2;
-    width:38px;
-    height:38px;
-    border-radius:12px;
-    object-fit:cover;
-    position: relative;
-    z-index: 3; /* stays above the centered GIF if needed */
-  }
-
-  /* TRUE center the GIF on the screen (not “center of remaining space”) */
-    /* TRUE center the GIF on the screen */
-  @media (max-width: 520px){
-  ./* iPhone: FORCE the GIF to true screen center */
-.brandGif{
-  position:absolute !important;
-
-  left:50vw !important;                 /* <-- viewport center */
-  transform: translateX(-50%) !important;
-
-  top: calc(env(safe-area-inset-top) + 10px) !important;  /* keep your vertical placement */
-  height:44px;                          /* keep your size */
-  width:auto !important;
-
-  max-width: calc(100vw - 150px) !important; /* keeps it clear of icon + toggle */
-  margin:0 !important;
-  right:auto !important;
-  justify-self:auto !important;         /* kills any grid centering rules */
-}
-}
-  /* Actions (toggle) on the right in row 1 */
-  .actions{
-    grid-column: 3 / 4;
-    grid-row: 1 / 2;
-    justify-self:end;
-    position: relative;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    object-fit: cover;
     z-index: 3;
   }
 
-  /* --- ROW 2: nav across full width --- */
-  .navRow,
-  nav{
+  /* DARK TOGGLE: force to far right (row 1) */
+  .actions{
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+    justify-self: end;
+    z-index: 3;
+  }
+
+  /* GIF: TRUE CENTER of the SCREEN (row 1)
+     NOTE: left:50vw centers to viewport, not remaining space */
+  .brandGif{
+    position: absolute;
+    left: 50vw;
+    transform: translateX(-50%);
+    top: calc(env(safe-area-inset-top) + 10px);
+
+    height: 44px;              /* size */
+    width: auto;
+    max-width: calc(100vw - 160px); /* avoid icon + toggle overlap */
+    margin: 0;
+    z-index: 2;
+    display: block;
+    pointer-events: none;      /* prevents weird tap behavior */
+  }
+
+  /* ROW 2: nav + Get Started together */
+  .navRow{
     grid-column: 1 / 4;
     grid-row: 2 / 3;
-    width:100%;
-    overflow-x:auto;
-    white-space:nowrap;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    padding-top:8px;
-    padding-bottom:6px;
-  }
-  nav a{ padding:6px 8px; display:inline-block; }
-}}
+    white-space: nowrap;
 
-      /* NavRow: links + Get Started button in SAME row */
-      .navRow{
-        grid-column: 1 / 4;
-        grid-row: 2 / 3;
-        display:flex;
-        align-items:center;
-        gap:10px;
-        overflow-x:auto;
-        -webkit-overflow-scrolling: touch;
-        white-space:nowrap;
-        padding-top:10px;
-        padding-bottom:6px;
-      }
-      .navRow nav{ flex:0 0 auto; }
-      .headerCta{ flex:0 0 auto; }
-    }
-  </style>
-</head>
-
-<body data-theme="light">
-  <div class="pageShell">
-    <header>
-      <div class="wrap topbar">
-
-        <!-- BRAND (icon + GIF) -->
-        <div class="brand" aria-label="Brand">
-          <img class="brandMark" src="assets/app-icon128.png" alt="assetRACK icon">
-          <img class="brandGif"
-               src="https://irp.cdn-website.com/01ed5e28/dms3rep/multi/trans_assetrack.gif"
-               alt="assetRACK"
-               data-at-alt />
-        </div>
-
-        <!-- NAV + GET STARTED (one place only; no duplicates) -->
-        <div class="navRow" aria-label="Primary row">
-          <nav aria-label="Primary">
-            <a href="#how">How it works</a>
-            <a href="#features">For crews</a>
-            <a href="#faq">FAQ</a>
-          </nav>
-          <a class="btn primary headerCta" href="#cta">Get Started</a>
-        </div>
-
-        <!-- ACTIONS (only theme toggle now) -->
-        <div class="actions">
-          <button class="btn toggle" id="themeToggle" type="button" aria-label="Toggle theme">
-            <span class="toggleDot" aria-hidden="true"></span>
-            <span id="themeLabel">Light</span>
-          </button>
-        </div>
-
-      </div>
-    </header>
-
-    <main>
-      <div class="wrap hero">
-        <div class="heroGrid">
-          <div class="card heroCard">
-            <div class="kicker">Contractor-ready asset clarity</div>
-            <h1>Track assets. Know where everything lives.</h1>
-            <p class="sub">
-              Tools, materials, and supplies across vans, job sites, and storage — without relying on memory, lists, or guesswork.
-            </p>
-
-            <div class="ctaRow">
-              <a class="btn primary" href="#cta">Get Started</a>
-              <a class="btn" href="#how">See how it works</a>
-              <span class="mini">Fast to check. Easy to trust.</span>
-            </div>
-
-            <div class="pillRow" aria-label="Key concepts">
-              <span class="pill">Search first</span>
-              <span class="pill">Current + Home location</span>
-              <span class="pill">Job sites are first-class</span>
-              <span class="pill">Missing is a real status</span>
-            </div>
-          </div>
-
-          <div class="card visualCard" aria-label="Rack/Track explainer">
-            <div class="visualTitle">Track ↔ Rack</div>
-            <p class="visualSub">Assets move — but they always have a home. <span data-at-name></span> shows both.</p>
-
-            <div class="diagram" role="img" aria-label="Diagram: asset moves to a rack location">
-              <div class="label" style="left:16px; top:16px">In use</div>
-              <div class="label" style="left:16px; bottom:16px">Current: Job — Lee Kitchen</div>
-
-              <div class="asset"></div>
-
-              <div class="centerText">
-                <div class="name" data-at-name></div>
-                <div class="hint">certainty, not guesswork</div>
-              </div>
-
-              <div class="rackTag">Home: Van 1 • LSB3R2</div>
-              <div class="rack">
-                <div class="slot"></div>
-                <div class="slot"></div>
-                <div class="slot hot"></div>
-                <div class="slot"></div>
-                <div class="slot"></div>
-                <div class="slot"></div>
-                <div class="slot"></div>
-              </div>
-
-              <svg viewBox="0 0 600 320" preserveAspectRatio="none" aria-hidden="true">
-                <path d="M140,140 C250,75 320,75 410,120" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" />
-                <path d="M155,228 C255,290 340,292 435,242" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="6 8" />
-                <circle cx="410" cy="120" r="5" fill="var(--accent)" />
-              </svg>
-            </div>
-
-            <div style="margin-top:14px; color:var(--muted2); font-size:13px">
-              Tip: Start with 5–10 zones per location. Add detail only where it helps.
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <section id="how">
-        <div class="wrap">
-          <h2 class="sectionTitle">Keeping track of physical stuff is a mental burden.</h2>
-          <p class="sectionSub">
-            Where is it? Who has it? Is it still at the last job? Most crews don’t lose tools because they’re careless — they lose clarity because work moves.
-          </p>
-
-          <div class="grid3">
-            <div class="panel">
-              <h3>Search first</h3>
-              <p>Type what you need. Get an answer you can trust — fast.</p>
-            </div>
-            <div class="panel">
-              <h3>Current + Home</h3>
-              <p>See where it is now and where it belongs. No guilt, no guessing.</p>
-            </div>
-            <div class="panel">
-              <h3>Built for real movement</h3>
-              <p>Vans, job sites, storage, and shared tools — modeled the way you actually work.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="features">
-        <div class="wrap">
-          <h2 class="sectionTitle">What <span data-at-name></span> does (and doesn’t try to be)</h2>
-          <p class="sectionSub">It’s not a warehouse system. It’s a trusted reference for where things are — and where they belong.</p>
-
-          <div class="grid2">
-            <div class="panel">
-              <h3>Do</h3>
-              <ul class="bullets">
-                <li>Find tools, materials, and supplies by search</li>
-                <li>Organize by Location → Zone → Slot code (optional)</li>
-                <li>Share visibility across your crew</li>
-                <li>Track consumables with simple quantity adjustments</li>
-                <li>Mark items Missing when reality is unknown</li>
-              </ul>
-            </div>
-
-            <div class="panel">
-              <h3>Don’t</h3>
-              <ul class="bullets">
-                <li>Force perfect counts or audits</li>
-                <li>Nag you all day</li>
-                <li>Turn your van into a spreadsheet</li>
-                <li>Punish you for imperfect updates</li>
-                <li>Assume job sites are temporary exceptions</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="faq">
-        <div class="wrap">
-          <h2 class="sectionTitle">FAQ</h2>
-          <p class="sectionSub">Short answers. No fluff.</p>
-
-          <div class="faqGrid">
-            <details>
-              <summary>What is <span data-at-name></span>?</summary>
-              <p><span data-at-name></span> helps you keep track of where tools, materials, and supplies are—and where they belong—without relying on memory or lists.</p>
-            </details>
-            <details>
-              <summary>Is this inventory software?</summary>
-              <p>Not in the traditional sense. It isn’t about audits or perfect counts. It’s about clarity—knowing where things are right now and where they should go back to.</p>
-            </details>
-            <details>
-              <summary>What problem does it solve?</summary>
-              <p>It removes the mental burden of keeping track of physical stuff. You don’t have to remember where something is, guess who has it, or keep wondering.</p>
-            </details>
-            <details>
-              <summary>How is this different from a spreadsheet?</summary>
-              <p>Lists capture intent. <span data-at-name></span> captures state. Instead of “I think it’s in Van 2,” you can search and know—without maintaining another list.</p>
-            </details>
-            <details>
-              <summary>What does “everything has a home” mean?</summary>
-              <p>Every item has a reference location—where it belongs when it’s not intentionally elsewhere. That doesn’t mean it’s wrong to be at a job or another van.</p>
-            </details>
-            <details>
-              <summary>What if something is missing?</summary>
-              <p>You can mark an item as Missing when its current location is unknown. This simply acknowledges reality so you don’t keep carrying the question.</p>
-            </details>
-          </div>
-        </div>
-      </section>
-
-      <section id="cta">
-        <div class="wrap">
-          <div class="ctaBand">
-            <h2>Stop relying on memory.</h2>
-            <p>Start with one van and one job site. Add detail only where it helps.</p>
-
-            <div class="ctaRow">
-              <a class="btn primary" href="#" onclick="alert('Hook this button to your email capture or app download.'); return false;">Get Started</a>
-              <a class="btn" href="#faq">Read the FAQ</a>
-            </div>
-
-            <div class="disclaimer">
-              <strong>Preview notice:</strong> <span data-at-name></span> is an independent product currently in development and being shared for preview/testing.
-              Information shown may be incomplete or inaccurate. Do not rely on <span data-at-name></span> for safety-critical decisions.
-            </div>
-          </div>
-
-          <footer>
-            <div class="foot">
-              <div>© <span id="y"></span> <span data-at-name></span></div>
-              <div class="legal">
-                <a href="#how">How it works</a>
-                <a href="#features">For crews</a>
-                <a href="#faq">FAQ</a>
-              </div>
-            </div>
-          </footer>
-        </div>
-      </section>
-    </main>
-  </div>
-<script>
-(function () {
-  /* =========================================================
-     1) STOP “RELOAD JUMPS” (desktop + iOS)
-     ========================================================= */
-  try {
-    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
-  } catch(e){}
-
-  function scrollToTopHard() {
-    // Multiple passes because iOS can re-apply scroll after first paint
-    window.scrollTo(0, 0);
-    requestAnimationFrame(() => window.scrollTo(0, 0));
-    setTimeout(() => window.scrollTo(0, 0), 50);
-    setTimeout(() => window.scrollTo(0, 0), 200);
+    padding-top: 8px;
+    padding-bottom: 6px;
   }
 
-  function scrollToHashHard() {
-    const hash = window.location.hash;
-    if (!hash) return;
+  .navRow nav{ flex: 0 0 auto; }
+  .navRow nav a{ padding: 6px 8px; display: inline-block; }
 
-    const el = document.querySelector(hash);
-    if (!el) return;
-
-    el.scrollIntoView({ behavior: "auto", block: "start" });
-    requestAnimationFrame(() => el.scrollIntoView({ behavior: "auto", block: "start" }));
-  }
-
-  // pageshow catches iOS “bfcache restore” reload weirdness
-  window.addEventListener("pageshow", () => {
-    if (window.location.hash) scrollToHashHard();
-    else scrollToTopHard();
-  });
-
-  // beforeunload helps prevent “reopen mid-page” on some browsers
-  window.addEventListener("beforeunload", () => {
-    if (!window.location.hash) window.scrollTo(0, 0);
-  });
-
-  /* =========================================================
-     2) BRAND + THEME
-     ========================================================= */
-  const BRAND_NAME = "assetRACK";
-  const STORAGE_KEY = "assetrack_theme";
-
-  // Fill brand name placeholders
-  document.querySelectorAll("[data-at-name]").forEach(el => { el.textContent = BRAND_NAME; });
-  document.querySelectorAll("[data-at-alt]").forEach(el => { el.setAttribute("alt", BRAND_NAME); });
-
-  const body = document.body;
-
-  // IMPORTANT: avoid duplicate IDs breaking things — use querySelector
-  const toggleBtn = document.querySelector("#themeToggle");
-  const label = document.querySelector("#themeLabel");
-
-  function applyTheme(theme) {
-    body.setAttribute("data-theme", theme);
-    if (label) label.textContent = (theme === "dark") ? "Light" : "Dark";
-  }
-
-  // If you ever want to reset theme, add ?resetTheme=1 to the URL once
-  const params = new URLSearchParams(window.location.search);
-  if (params.get("resetTheme") === "1") {
-    localStorage.removeItem(STORAGE_KEY);
-  }
-
-  const saved = localStorage.getItem(STORAGE_KEY);
-  const systemPrefersDark =
-    window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  const initialTheme = saved ? saved : (systemPrefersDark ? "dark" : "light");
-  applyTheme(initialTheme);
-
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      const current = body.getAttribute("data-theme") || "light";
-      const next = (current === "dark") ? "light" : "dark";
-      applyTheme(next);
-      localStorage.setItem(STORAGE_KEY, next);
-    });
-  }
-
-  /* =========================================================
-     3) YEAR
-     ========================================================= */
-  const y = document.getElementById("y");
-  if (y) y.textContent = new Date().getFullYear();
-})();
-</script>
-</body>
-</html>
+  .headerCta{ flex: 0 0 auto; }
+}
