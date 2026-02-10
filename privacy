@@ -1,1 +1,539 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
+  <title>assetRACK — Privacy Policy</title>
+  <meta name="description" content="Privacy Policy for assetRACK (assetrack)." />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="icon" href="assets/app-icon128.png" />
+
+  <style>
+    /* =========================================================
+       1) GLOBAL / BASE STYLES
+       ========================================================= */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    html{scroll-behavior:smooth;}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      line-height:1.55;
+      font-size:16px;
+      background: var(--bg);
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:1120px; margin:0 auto; padding:0 20px}
+
+    /* Prevent sticky header covering section titles */
+    section{scroll-margin-top: 92px;}
+
+    /* =========================================================
+       2) THEME TOKENS (colors)
+       ========================================================= */
+    body[data-theme="dark"]{
+      --bg:#12151c;
+      --bg2: rgba(255,255,255,.05);
+      --text:#e8ecf6;
+      --muted: rgba(232,236,246,.78);
+      --muted2: rgba(232,236,246,.62);
+      --line: rgba(255,255,255,.14);
+
+      --btn: rgba(255,255,255,.08);
+      --btnText: rgba(255,255,255,.92);
+      --btnLine: rgba(255,255,255,.18);
+      --btnHover: rgba(255,255,255,.12);
+
+      --primary: rgba(90,160,255,.95);
+      --primaryHover: rgba(90,160,255,1);
+      --primaryText:#ffffff;
+
+      --shadow: 0 16px 60px rgba(0,0,0,.45);
+
+      --accent: rgba(90,160,255,.65);
+      --accent2: rgba(139,242,179,.45);
+    }
+
+    body[data-theme="light"]{
+      --bg: #f2f5fb;
+      --bg2: rgba(255,255,255,.86);
+      --text: #0b1220;
+      --muted: rgba(11,18,32,.74);
+      --muted2: rgba(11,18,32,.58);
+      --line: rgba(11,18,32,.12);
+
+      --btn: rgba(255,255,255,.72);
+      --btnText: rgba(11,18,32,.86);
+      --btnLine: rgba(11,18,32,.18);
+      --btnHover: rgba(255,255,255,.92);
+
+      --primary: #2563eb;
+      --primaryHover:#1d4ed8;
+      --primaryText:#ffffff;
+
+      --accent: rgba(37,99,235,.55);
+      --accent2: rgba(34,197,94,.28);
+
+      /* “Hero material” used for cards in light mode */
+      --surfaceGrad: linear-gradient(
+        135deg,
+        rgba(185,195,225,.26) 12%,
+        rgba(222,226,232,.60) 52%,
+        rgba(246,248,252,.56) 100%
+      );
+      --surfaceBloom1: radial-gradient(
+        900px 520px at 12% 8%,
+        rgba(255,255,255,.42) 0%,
+        rgba(255,255,255,.18) 38%,
+        rgba(255,255,255,.06) 62%,
+        transparent 78%
+      );
+      --surfaceBloom2: radial-gradient(
+        900px 700px at 92% 92%,
+        rgba(255,255,255,.12) 0%,
+        transparent 55%
+      );
+    }
+
+    /* =========================================================
+       3) PAGE BACKGROUND
+       ========================================================= */
+    .pageShell{
+      min-height:100vh;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    body[data-theme="light"] .pageShell{
+      background:
+        linear-gradient(135deg,
+          rgba(120,165,255,.22) 0%,
+          rgba(255,255,255,.56) 38%,
+          rgba(245,246,248,.72) 70%,
+          rgba(250,250,251,.92) 100%
+        ),
+        radial-gradient(1000px 760px at 14% 10%,
+          rgba(120,165,255,.18),
+          transparent 62%
+        ),
+        radial-gradient(900px 700px at 86% 16%,
+          rgba(160,130,255,.12),
+          transparent 66%
+        ),
+        radial-gradient(1100px 900px at 92% 92%,
+          rgba(245,246,248,.85),
+          transparent 60%
+        ),
+        var(--bg);
+    }
+
+    body[data-theme="dark"] .pageShell{
+      background:
+        radial-gradient(1200px 800px at 20% 10%, rgba(90,160,255,.20), transparent 55%),
+        radial-gradient(900px 700px at 85% 20%, rgba(139,242,179,.12), transparent 55%),
+        radial-gradient(900px 900px at 40% 95%, rgba(90,160,255,.10), transparent 55%),
+        var(--bg);
+    }
+
+    /* =========================================================
+       4) HEADER (solid to avoid iOS flash)
+       ========================================================= */
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 30;
+
+      background: #ffffff;
+      border-bottom: 1px solid rgba(11,18,32,.14);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+
+      transform: translateZ(0);
+      will-change: transform;
+    }
+    body[data-theme="dark"] header{
+      background: #0b0f16;
+      border-bottom: 1px solid rgba(255,255,255,.14);
+    }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:14px 20px;
+    }
+
+    /* BRAND block (desktop/tablet) */
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+      flex:1 1 auto;
+    }
+
+    /* Desktop sizing (bigger vs buttons) */
+    .brandMark{
+      width:40px;
+      height:40px;
+      border-radius:12px;
+      display:block;
+      flex:0 0 40px;
+      object-fit:cover;
+    }
+    .brandGif{
+      height:40px;
+      width:auto;
+      display:block;
+      max-width:260px;
+      transform:none !important;
+    }
+
+    /* Row 2 container in header (nav + Get Started) */
+    .navRow{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:0 0 auto;
+    }
+
+    nav{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      flex:0 0 auto;
+    }
+    nav a{
+      font-size:14px;
+      font-weight:800;
+      color: var(--btnText);
+    }
+    nav a:hover{ color: var(--text); }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex:0 0 auto;
+    }
+
+    /* =========================================================
+       5) BUTTONS
+       ========================================================= */
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--btnLine);
+      background: var(--btn);
+      color: var(--btnText);
+      padding:10px 14px;
+      border-radius:14px;
+      font-weight:900;
+      font-size:14px;
+      gap:10px;
+      cursor:pointer;
+      transition: transform .06s ease, background .15s ease, border-color .15s ease;
+      white-space:nowrap;
+      user-select:none;
+    }
+    .btn:hover{background: var(--btnHover)}
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{
+      background: var(--primary);
+      border-color: var(--primary);
+      color: var(--primaryText);
+      box-shadow: 0 14px 30px rgba(37,99,235,.18);
+    }
+    .btn.primary:hover{background: var(--primaryHover); border-color: var(--primaryHover)}
+
+    .btn.toggle{padding:10px 12px; gap:8px}
+    .toggleDot{
+      width:10px; height:10px; border-radius:999px;
+      background: rgba(100,116,139,.65);
+      border:1px solid var(--btnLine);
+    }
+    body[data-theme="dark"] .toggleDot{
+      background: rgba(232,236,246,.45);
+      border-color: rgba(255,255,255,.18);
+    }
+
+    /* =========================================================
+       PRIVACY PAGE BODY (simple, readable)
+       ========================================================= */
+    main{padding:36px 0 10px}
+    .policyCard{
+      background: var(--bg2);
+      border:1px solid var(--line);
+      border-radius:28px;
+      box-shadow: var(--shadow);
+      padding:24px 22px;
+    }
+    .policyCard h1{
+      margin:0 0 8px;
+      font-size:34px;
+      line-height:1.1;
+      letter-spacing:-.6px;
+      color: var(--text);
+    }
+    .policyCard h2{
+      margin:22px 0 8px;
+      font-size:18px;
+      letter-spacing:-.2px;
+      color: var(--text);
+    }
+    .policyCard p, .policyCard li{color:var(--muted); font-size:15px}
+    .policyCard ul{padding-left:18px; margin:10px 0}
+    .policyMeta{color:var(--muted2); font-size:13px; margin:0 0 14px}
+    .linkRow{display:flex; gap:12px; flex-wrap:wrap; margin-top:14px}
+
+    footer{padding:18px 0 40px; color:var(--muted2); font-size:13px}
+    .foot{
+      display:flex; justify-content:space-between; gap:14px; flex-wrap:wrap;
+      border-top:1px solid var(--line); padding-top:18px
+    }
+    .legal{display:flex; gap:14px; flex-wrap:wrap}
+    .legal a{color:var(--muted2)}
+    .legal a:hover{color:var(--text)}
+
+    @media (max-width: 820px){
+      .topbar{flex-wrap:wrap; row-gap:10px;}
+      .navRow{width:100%; order:99; overflow-x:auto; -webkit-overflow-scrolling: touch; white-space:nowrap; padding-top:8px; padding-bottom:8px;}
+      nav a{ padding:6px 8px; display:inline-block; }
+    }
+
+    @media (max-width: 520px){
+      .topbar{
+        position: relative;
+        display:grid;
+        grid-template-columns: auto 1fr auto;
+        grid-template-rows: auto auto;
+        align-items:center;
+        gap:10px;
+        padding: calc(10px + env(safe-area-inset-top)) 14px 10px 14px;
+      }
+      .brand{ display: contents; }
+
+      .brandMark{
+        grid-column: 1 / 2;
+        grid-row: 1 / 2;
+        width:38px;
+        height:38px;
+        border-radius:12px;
+        object-fit:cover;
+        z-index: 3;
+      }
+      .actions{
+        grid-column: 3 / 4;
+        grid-row: 1 / 2;
+        justify-self:end;
+        z-index: 3;
+      }
+      .brandGif{
+        position:absolute !important;
+        left:50% !important;
+        transform: translateX(-50%) !important;
+        top: calc(env(safe-area-inset-top) + 10px) !important;
+        height:44px !important;
+        width:auto !important;
+        max-width: calc(100vw - 170px) !important;
+        margin:0 !important;
+        right:auto !important;
+      }
+      .navRow{
+        grid-column: 1 / 4;
+        grid-row: 2 / 3;
+        display:flex;
+        align-items:center;
+        gap:10px;
+        overflow-x:auto;
+        -webkit-overflow-scrolling: touch;
+        white-space:nowrap;
+        padding-top:8px;
+        padding-bottom:6px;
+      }
+      .navRow nav{ flex:0 0 auto; }
+      .navRow nav a{ padding:6px 8px; display:inline-block; }
+      .headerCta{ flex:0 0 auto; }
+    }
+  </style>
+</head>
+
+<body data-theme="dark">
+  <div class="pageShell">
+
+    <header>
+      <div class="wrap topbar">
+
+        <!-- BRAND (icon + GIF) -->
+        <div class="brand" aria-label="Brand">
+          <img class="brandMark" src="assets/app-icon128.png" alt="assetRACK icon">
+          <img class="brandGif"
+               src="https://irp.cdn-website.com/01ed5e28/dms3rep/multi/trans_assetrack.gif"
+               alt="assetRACK"
+               data-at-alt />
+        </div>
+
+        <!-- NAV (for standalone pages, point to real pages instead of #anchors) -->
+        <div class="navRow" aria-label="Primary row">
+          <nav aria-label="Primary">
+            <a href="./index.html">Home</a>
+            <a href="./support.html">Support</a>
+            <a href="./privacy.html" aria-current="page">Privacy</a>
+          </nav>
+          <a class="btn primary headerCta" href="./support.html">Get Help</a>
+        </div>
+
+        <!-- Actions: ONLY theme toggle -->
+        <div class="actions">
+          <button class="btn toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+            <span class="toggleDot" aria-hidden="true"></span>
+            <span id="themeLabel">Light</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <main>
+      <div class="wrap">
+        <div class="policyCard">
+
+          <h1>Privacy Policy</h1>
+          <p class="policyMeta"><strong>Effective date:</strong> <span id="effectiveDate">[ADD DATE]</span></p>
+
+          <!-- =========================================================
+               INSERT PRIVACY TEXT BELOW (PASTE YOUR POLICY CONTENT HERE)
+               ========================================================= -->
+
+          <p>
+            This Privacy Policy explains how <strong>Peters Construction</strong> (“we”, “us”) collects, uses, and shares
+            information when you use the <strong>assetRACK</strong> mobile app and related services (the “Service”).
+          </p>
+
+          <h2>Information we collect</h2>
+          <ul>
+            <li><strong>Account information:</strong> email address and authentication details needed to create and access your account.</li>
+            <li><strong>Organization and inventory data you provide:</strong> company name, invite codes, locations/zones, item names, notes, and related inventory records you enter.</li>
+            <li><strong>Usage and diagnostics:</strong> basic app diagnostics and crash information may be collected to improve stability and performance.</li>
+          </ul>
+
+          <h2>How we use information</h2>
+          <ul>
+            <li>To authenticate you and provide access to your organization’s workspace.</li>
+            <li>To store and display your inventory, locations, and item records.</li>
+            <li>To maintain, protect, and improve the Service (including debugging and performance monitoring).</li>
+            <li>To respond to support requests and service-related communications.</li>
+          </ul>
+
+          <h2>How we share information</h2>
+          <p>We do not sell your personal information. We may share information only in these situations:</p>
+          <ul>
+            <li><strong>Service providers:</strong> We use third-party services to operate the Service (for example, authentication and database hosting). These providers process data on our behalf.</li>
+            <li><strong>Within your organization:</strong> Your inventory and organization data may be visible to other authorized users in the same workspace.</li>
+            <li><strong>Legal and safety:</strong> If required by law, or to protect rights, safety, and security.</li>
+          </ul>
+
+          <h2>Third-party services</h2>
+          <p>
+            The Service may use third-party infrastructure (for example Firebase) for authentication and data storage.
+            Their processing of information is governed by their own privacy policies.
+          </p>
+
+          <h2>Data retention</h2>
+          <p>
+            We retain account and organization data for as long as necessary to provide the Service.
+            You may request deletion by contacting us (see Contact section below).
+          </p>
+
+          <h2>Your choices</h2>
+          <ul>
+            <li><strong>Correction:</strong> You can edit many inventory fields directly in the app.</li>
+            <li><strong>Deletion:</strong> You can request deletion by contacting us.</li>
+          </ul>
+
+          <h2>Security</h2>
+          <p>
+            We use reasonable safeguards designed to protect information.
+            No method of transmission or storage is 100% secure.
+          </p>
+
+          <h2>Changes to this policy</h2>
+          <p>
+            We may update this policy from time to time. We will update the effective date when changes are made.
+          </p>
+
+          <h2>Contact</h2>
+          <p>
+            If you have questions or requests about privacy, contact:
+            <br />
+            <strong>Peters Construction</strong><br />
+            Email: <a href="mailto:support@petersremodel.com">support@petersremodel.com</a>
+          </p>
+
+          <!-- =========================================================
+               END PRIVACY TEXT
+               ========================================================= -->
+
+          <div class="linkRow">
+            <a class="btn" href="./support.html">Support</a>
+            <a class="btn primary" href="./index.html">Back to Home</a>
+          </div>
+
+        </div>
+
+        <footer>
+          <div class="foot">
+            <div>© <span id="y"></span> <span data-at-name></span></div>
+            <div class="legal">
+              <a href="./index.html">Home</a>
+              <a href="./support.html">Support</a>
+              <a href="./privacy.html">Privacy</a>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (function () {
+      const BRAND_NAME = "assetRACK";
+      const STORAGE_KEY = "assetrack_theme";
+
+      document.querySelectorAll("[data-at-name]").forEach(el => { el.textContent = BRAND_NAME; });
+      document.querySelectorAll("[data-at-alt]").forEach(el => { el.setAttribute("alt", BRAND_NAME); });
+
+      const body = document.body;
+      const label = document.getElementById("themeLabel");
+      const toggleBtn = document.getElementById("themeToggle");
+
+      function applyTheme(theme) {
+        body.setAttribute("data-theme", theme);
+        if (label) label.textContent = (theme === "dark") ? "Light" : "Dark";
+      }
+
+      const saved = localStorage.getItem(STORAGE_KEY);
+      const systemPrefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const initialTheme = saved ? saved : (systemPrefersDark ? "dark" : "light");
+      applyTheme(initialTheme);
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener("click", function () {
+          const current = body.getAttribute("data-theme") || "light";
+          const next = (current === "dark") ? "light" : "dark";
+          applyTheme(next);
+          localStorage.setItem(STORAGE_KEY, next);
+        });
+      }
+
+      const y = document.getElementById("y");
+      if (y) y.textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
