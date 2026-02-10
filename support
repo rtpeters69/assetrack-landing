@@ -1,1 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
 
+  <title>assetRACK — Support</title>
+  <meta name="description" content="Support and contact information for assetRACK (assetrack)." />
+  <meta name="robots" content="index, follow" />
+
+  <link rel="icon" href="assets/app-icon128.png" />
+
+  <!-- Reuse your exact CSS by COPY/PASTING the <style> block from privacy.html here -->
+  <!-- (Keeping this file short so you don’t manage two slightly-different CSS copies.) -->
+</head>
+
+<body data-theme="dark">
+  <div class="pageShell">
+
+    <!-- Reuse your exact HEADER by COPY/PASTING the <header> block from privacy.html here -->
+
+    <main>
+      <div class="wrap">
+        <div class="policyCard">
+          <h1>Support</h1>
+          <p class="policyMeta">Need help with sign-in, teams, or data? Start here.</p>
+
+          <!-- =========================================================
+               INSERT SUPPORT CONTENT BELOW
+               ========================================================= -->
+
+          <h2>Contact</h2>
+          <p>
+            Email: <a href="mailto:support@petersremodel.com">support@petersremodel.com</a><br />
+            Please include: your email address, company name, and a short description of the issue.
+          </p>
+
+          <h2>Common issues</h2>
+          <ul>
+            <li><strong>Can’t sign in:</strong> verify email/password, or use password reset.</li>
+            <li><strong>“Almost there” / not linked to a company:</strong> you need an invite code or must create a company.</li>
+            <li><strong>Data not showing:</strong> confirm you’re in the correct company and give the app a few seconds after login.</li>
+          </ul>
+
+          <h2>Privacy</h2>
+          <p>Read our <a href="./privacy.html">Privacy Policy</a>.</p>
+
+          <!-- =========================================================
+               END SUPPORT CONTENT
+               ========================================================= -->
+
+          <div class="linkRow">
+            <a class="btn" href="./privacy.html">Privacy</a>
+            <a class="btn primary" href="./index.html">Back to Home</a>
+          </div>
+        </div>
+
+        <!-- Reuse your exact FOOTER by COPY/PASTING the <footer> block from privacy.html here -->
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Reuse your exact theme/year <script> from privacy.html here -->
+</body>
+</html>
